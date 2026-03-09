@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galerie d'art — Site d'artiste</title>
+  <meta name="description" content="Galerie d'artiste contemporaine : découvrez les œuvres, les collections, les formats et les modalités d'achat." />
+  <meta name="theme-color" content="#f5f1e8" />
+  <style>
+    :root{
+      --bg:#f5f1e8;
+      --bg-soft:#fcfaf6;
+      --card:#fffdf9;
+      --ink:#1f1a17;
+      --muted:#6f635a;
+      --line:rgba(31,26,23,.12);
+      --accent:#8a5c3d;
+      --accent-2:#d6b79b;
+      --ok:#345b3d;
+      --warn:#7c5e1f;
+      --sold:#7b3f3f;
+      --shadow:0 20px 60px rgba(31,26,23,.08);
+      --radius:24px;
+      --radius-sm:16px;
+      --max:1200px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(214,183,155,.22), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(138,92,61,.08), transparent 22%),
+        var(--bg);
+      line-height:1.55;
+    }
+
+    img{max-width:100%; display:block}
+    a{color:inherit; text-decoration:none}
+    button{font:inherit}
+    .container{width:min(var(--max), calc(100% - 2rem)); margin-inline:auto}
+    .eyebrow{
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:.76rem;
+      color:var(--muted);
+      margin-bottom:.8rem;
+    }
+    .section-title{
+      font-family: Georgia, "Times New Roman", serif;
+      font-size:clamp(2rem, 4vw, 3.4rem);
+      line-height:1.05;
+      margin:0 0 1rem;
+      font-weight:600;
+    }
+    .section-copy{
+      color:var(--muted);
+      max-width:65ch;
+      margin:0;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.7rem;
+      padding:.92rem 1.2rem;
+      border-radius:999px;
+      border:1px solid transparent;
+      cursor:pointer;
+      transition:.25s ease;
+      font-weight:600;
+      min-height:48px;
+    }
+    .btn-primary{
+      background:var(--ink);
+      color:white;
+      box-shadow:var(--shadow);
+    }
+    .btn-primary:hover{transform:translateY(-2px)}
+    .btn-secondary{
+      border-color:var(--line);
+      background:rgba(255,255,255,.55);
+      backdrop-filter: blur(12px);
+    }
+    .btn-secondary:hover{background:white}
+    .btn-ghost{
+      padding:.75rem 1rem;
+      border:1px solid var(--line);
+      background:transparent;
+    }
+
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter:blur(16px);
+      background:rgba(245,241,232,.75);
+      border-bottom:1px solid rgba(31,26,23,.08);
+    }
+    .site-header-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      min-height:76px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:.9rem;
+      min-width:0;
+    }
+    .brand-mark{
+      width:42px; height:42px; border-radius:50%;
+      display:grid; place-items:center;
+      border:1px solid var(--line);
+      background:linear-gradient(135deg, #fffaf2, #efe0ce);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+      font-family:Georgia, serif;
+      font-size:1.2rem;
+    }
+    .brand-text{min-width:0}
+    .brand-title{font-weight:700; font-size:1rem}
+    .brand-sub{font-size:.86rem; color:var(--muted)}
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .nav a{
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .nav a:hover{color:var(--ink)}
+
+    .hero{
+      padding:4rem 0 2rem;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:2rem;
+      align-items:center;
+    }
+    .hero-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,255,255,.45));
+      border:1px solid var(--line);
+      border-radius:32px;
+      box-shadow:var(--shadow);
+      padding:clamp(1.4rem, 3vw, 2rem);
+    }
+    .hero-copy h1{
+      font-family:Georgia, "Times New Roman", serif;
+      font-size:clamp(2.6rem, 6vw, 5.8rem);
+      line-height:.95;
+      margin:.25rem 0 1rem;
+      font-weight:600;
+      letter-spacing:-.03em;
+    }
+    .hero-copy p{
+      font-size:1.05rem;
+      color:var(--muted);
+      max-width:60ch;
+      margin:0 0 1.4rem;
+    }
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.8rem;
+      margin-bottom:1.35rem;
+    }
+    .hero-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .hero-figure{
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-figure::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, transparent 40%, rgba(31,26,23,.4));
+      pointer-events:none;
+    }
+    .hero-figure img{
+      width:100%;
+      aspect-ratio:4/5;
+      object-fit:cover;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.6);
+    }
+    .hero-caption{
+      position:absolute;
+      left:1.2rem;
+      right:1.2rem;
+      bottom:1.15rem;
+      z-index:2;
+      color:white;
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:end;
+    }
+    .hero-caption strong{display:block; font-size:1.1rem}
+    .hero-caption span{display:block; opacity:.86; font-size:.94rem}
+
+    .strip{
+      padding:1rem 0 0;
+    }
+    .strip-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:1rem;
+    }
+    .strip-card{
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:1rem 1.1rem;
+      background:rgba(255,255,255,.55);
+    }
+    .strip-card strong{display:block; margin-bottom:.35rem}
+    .strip-card span{color:var(--muted); font-size:.95rem}
+
+    section{
+      padding:4.2rem 0;
+    }
+
+    .toolbar{
+      margin-top:1.8rem;
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:1rem;
+      align-items:center;
+    }
+    .searchbox, .sortbox{
+      display:flex;
+      align-items:center;
+      gap:.75rem;
+      background:rgba(255,255,255,.7);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:.85rem 1rem;
+      min-height:56px;
+    }
+    .searchbox input, .sortbox select{
+      border:none;
+      outline:none;
+      background:transparent;
+      width:100%;
+      font:inherit;
+      color:var(--ink);
+    }
+    .filter-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.7rem;
+      margin-top:1rem;
+    }
+    .chip{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.65);
+      padding:.7rem .95rem;
+      border-radius:999px;
+      cursor:pointer;
+      color:var(--muted);
+      transition:.25s ease;
+    }
+    .chip.active, .chip:hover{
+      background:var(--ink);
+      color:white;
+      border-color:var(--ink);
+    }
+
+    .gallery-grid{
+      margin-top:1.6rem;
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:1.2rem;
+    }
+    .art-card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 12px 30px rgba(31,26,23,.06);
+      transition:.25s ease;
+      display:flex;
+      flex-direction:column;
+    }
+    .art-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 20px 44px rgba(31,26,23,.1);
+    }
+    .art-media{
+      position:relative;
+      isolation:isolate;
+      overflow:hidden;
+      background:#efe7dc;
+    }
+    .art-media img{
+      width:100%;
+      aspect-ratio:5/6;
+      object-fit:cover;
+    }
+    .badge{
+      position:absolute;
+      top:.9rem;
+      left:.9rem;
+      z-index:2;
+      padding:.45rem .7rem;
+      border-radius:999px;
+      background:rgba(255,255,255,.92);
+      font-size:.8rem;
+      border:1px solid rgba(31,26,23,.08);
+      backdrop-filter:blur(8px);
+    }
+    .badge.available{color:var(--ok)}
+    .badge.reserved{color:var(--warn)}
+    .badge.sold{color:var(--sold)}
+    .art-body{
+      padding:1rem;
+      display:flex;
+      flex-direction:column;
+      gap:.8rem;
+      flex:1;
+    }
+    .art-head{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:flex-start;
+    }
+    .art-title{
+      font-family:Georgia, serif;
+      font-size:1.2rem;
+      line-height:1.1;
+      margin:0 0 .25rem;
+    }
+    .art-sub{
+      font-size:.93rem;
+      color:var(--muted);
+    }
+    .price{
+      text-align:right;
+      white-space:nowrap;
+    }
+    .price strong{display:block}
+    .price small{color:var(--muted)}
+    .art-desc{
+      color:var(--muted);
+      font-size:.96rem;
+    }
+    .art-actions{
+      margin-top:auto;
+      display:flex;
+      gap:.7rem;
+      flex-wrap:wrap;
+    }
+    .art-actions .btn{
+      flex:1 1 180px;
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1.4rem;
+      align-items:start;
+    }
+    .panel{
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:rgba(255,255,255,.65);
+      box-shadow:var(--shadow);
+      padding:1.4rem;
+    }
+    .list{
+      display:grid;
+      gap:1rem;
+      margin-top:1.2rem;
+    }
+    .list-item{
+      padding:1rem;
+      border-radius:20px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.5);
+    }
+    .list-item strong{
+      display:block;
+      margin-bottom:.35rem;
+    }
+    .list-item span{color:var(--muted)}
+
+    .testimonials{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:1rem;
+      margin-top:1.6rem;
+    }
+    .quote{
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:1.2rem;
+      background:rgba(255,255,255,.66);
+    }
+    .quote p{margin:0 0 .85rem}
+    .quote small{color:var(--muted)}
+
+    .faq{
+      display:grid;
+      gap:.85rem;
+      margin-top:1.5rem;
+    }
+    details{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:1rem 1.1rem;
+      background:rgba(255,255,255,.65);
+    }
+    summary{
+      cursor:pointer;
+      font-weight:600;
+    }
+    details p{
+      color:var(--muted);
+      margin: .85rem 0 0;
+    }
+
+    .contact-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:1.2rem;
+    }
+    .contact-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.8rem;
+      margin-top:1.2rem;
+    }
+    .contact-card{
+      display:grid;
+      gap:.9rem;
+    }
+    .contact-line{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:1rem;
+      background:rgba(255,255,255,.65);
+    }
+    .contact-label{
+      display:block;
+      font-size:.82rem;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin-bottom:.2rem;
+    }
+    .contact-value{
+      font-weight:600;
+      word-break:break-word;
+    }
+
+    .footer{
+      padding:2rem 0 3rem;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .footer-inner{
+      border-top:1px solid var(--line);
+      padding-top:1.4rem;
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      flex-wrap:wrap;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:80;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:1rem;
+      background:rgba(16,12,9,.58);
+      backdrop-filter:blur(6px);
+    }
+    .modal.show{display:flex}
+    .modal-card{
+      width:min(1100px, 100%);
+      max-height:92vh;
+      overflow:auto;
+      border-radius:28px;
+      background:var(--bg-soft);
+      border:1px solid rgba(255,255,255,.2);
+      box-shadow:0 30px 80px rgba(0,0,0,.24);
+    }
+    .modal-grid{
+      display:grid;
+      grid-template-columns:1fr .9fr;
+      gap:0;
+    }
+    .modal-media{
+      background:#eee4d7;
+      min-height:100%;
+    }
+    .modal-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      min-height:360px;
+    }
+    .modal-body{
+      padding:1.5rem;
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+    }
+    .modal-top{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:flex-start;
+    }
+    .modal-title{
+      font-family:Georgia, serif;
+      font-size:2rem;
+      line-height:1;
+      margin:0 0 .35rem;
+    }
+    .meta-grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:.8rem;
+    }
+    .meta-item{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:.9rem 1rem;
+      background:rgba(255,255,255,.55);
+    }
+    .meta-item span{
+      display:block;
+      color:var(--muted);
+      font-size:.83rem;
+      margin-bottom:.2rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .meta-item strong{
+      display:block;
+      font-size:1rem;
+    }
+    .modal-actions{
+      display:flex;
+      gap:.8rem;
+      flex-wrap:wrap;
+      margin-top:auto;
+    }
+    .close-btn{
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      width:42px; height:42px;
+      display:grid; place-items:center;
+      border-radius:50%;
+      border:1px solid var(--line);
+    }
+    .empty-state{
+      padding:1.4rem;
+      border:1px dashed var(--line);
+      border-radius:20px;
+      color:var(--muted);
+      background:rgba(255,255,255,.45);
+      margin-top:1.4rem;
+    }
+
+    @media (max-width: 980px){
+      .hero-grid,
+      .split,
+      .contact-grid,
+      .modal-grid,
+      .toolbar{
+        grid-template-columns:1fr;
+      }
+      .gallery-grid,
+      .testimonials,
+      .strip-grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+      .nav{
+        display:none;
+      }
+    }
+
+    @media (max-width: 680px){
+      section{padding:3.2rem 0}
+      .gallery-grid,
+      .testimonials,
+      .strip-grid{
+        grid-template-columns:1fr;
+      }
+      .meta-grid{
+        grid-template-columns:1fr;
+      }
+      .hero{
+        padding-top:2.3rem;
+      }
+      .hero-card{
+        border-radius:24px;
+      }
+      .container{
+        width:min(var(--max), calc(100% - 1rem));
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header-inner">
+      <a href="#top" class="brand" aria-label="Retour en haut">
+        <div class="brand-mark" id="brandMark">A</div>
+        <div class="brand-text">
+          <div class="brand-title" id="brandTitle">Nom de l'artiste</div>
+          <div class="brand-sub">Peintre — œuvres originales</div>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="#galerie">Galerie</a>
+        <a href="#apropos">À propos</a>
+        <a href="#achat">Acheter</a>
+        <a href="#contact">Contact</a>
+        <a href="#contact" class="btn btn-secondary">Commander une œuvre</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-card hero-copy">
+          <div class="eyebrow">Galerie d'art en ligne</div>
+          <h1 id="heroTitle">Une peinture qui habille l'espace et raconte une émotion.</h1>
+          <p id="heroText">
+            Une vitrine élégante pensée pour exposer le travail de l'artiste, rassurer les acheteurs et faciliter la prise de contact ou l'achat direct.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#galerie" class="btn btn-primary">Voir la galerie</a>
+            <a href="#contact" class="btn btn-secondary">Demander une œuvre</a>
+          </div>
+
+          <div class="hero-meta">
+            <span id="artistLocation">Atelier • France</span>
+            <span id="shippingText">Expédition soignée • certificat possible</span>
+            <span id="commissionsText">Commandes personnalisées ouvertes</span>
+          </div>
+        </div>
+
+        <div class="hero-card hero-figure">
+          <img id="heroImage" src="assets/artworks/oeuvre-1.svg" alt="Œuvre mise en avant" width="900" height="1125" />
+          <div class="hero-caption">
+            <div>
+              <strong id="heroArtworkTitle">Œuvre en lumière</strong>
+              <span id="heroArtworkMeta">Acrylique sur toile • 80 × 100 cm</span>
+            </div>
+            <div>
+              <span id="heroArtworkPrice">1 250 €</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container strip">
+        <div class="strip-grid">
+          <div class="strip-card">
+            <strong>Images grandes et soignées</strong>
+            <span>Le site valorise chaque œuvre avec de vraies fiches produit et une lecture claire.</span>
+          </div>
+          <div class="strip-card">
+            <strong>Achat simple</strong>
+            <span>Réservation par email ou lien de paiement direct, sans usine à gaz technique.</span>
+          </div>
+          <div class="strip-card">
+            <strong>Gestion facile</strong>
+            <span>Les œuvres se modifient dans un seul fichier, pratique pour GitHub Pages.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="galerie">
+      <div class="container">
+        <div class="eyebrow">Collection</div>
+        <h2 class="section-title">Une galerie pensée pour vendre sans faire “boutique froide”.</h2>
+        <p class="section-copy">
+          Chaque œuvre doit donner envie de s'arrêter : une image forte, un titre, un format, une technique, un prix lisible et un chemin d'achat évident.
+        </p>
+
+        <div class="toolbar">
+          <div class="searchbox" role="search">
+            <span aria-hidden="true">⌕</span>
+            <input id="searchInput" type="search" placeholder="Rechercher une œuvre, une couleur, une série..." aria-label="Rechercher une œuvre" />
+          </div>
+          <div class="sortbox">
+            <span aria-hidden="true">↕</span>
+            <select id="sortSelect" aria-label="Trier les œuvres">
+              <option value="featured">Mettre en avant</option>
+              <option value="newest">Plus récentes</option>
+              <option value="price-asc">Prix croissant</option>
+              <option value="price-desc">Prix décroissant</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-row" id="filterRow" aria-label="Filtres de catégorie"></div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>Aucune œuvre ne correspond à la recherche actuelle.</div>
+      </div>
+    </section>
+
+    <section id="apropos">
+      <div class="container split">
+        <div class="panel">
+          <div class="eyebrow">L'artiste</div>
+          <h2 class="section-title" id="aboutTitle">Une présence artistique identifiable et rassurante.</h2>
+          <p class="section-copy" id="aboutText1">
+            Une page d'artiste convaincante ne vend pas seulement des tableaux : elle raconte une démarche, une sensibilité et une manière de travailler.
+          </p>
+          <p class="section-copy" id="aboutText2" style="margin-top:1rem;">
+            Remplace ce texte par l'histoire de ta belle-mère : inspirations, techniques, expositions, collections, médiums préférés, ville d'atelier et ce qui rend son travail singulier.
+          </p>
+        </div>
+
+        <div class="panel">
+          <div class="eyebrow">Ce qu'un acheteur veut savoir</div>
+          <div class="list">
+            <div class="list-item">
+              <strong>Ce que l'on achète</strong>
+              <span>Original, série, tirage, format, support, technique, année, encadrement éventuel.</span>
+            </div>
+            <div class="list-item">
+              <strong>Ce que l'on ressent</strong>
+              <span>Une courte histoire autour de l'œuvre aide souvent à créer le déclic émotionnel.</span>
+            </div>
+            <div class="list-item">
+              <strong>Comment cela se passe</strong>
+              <span>Paiement, réservation, expédition, remise en main propre, délai et certificat.</span>
+            </div>
+            <div class="list-item">
+              <strong>Pourquoi faire confiance</strong>
+              <span>Bio, atelier, expositions, photos de qualité, contact direct et politique claire.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="achat">
+      <div class="container">
+        <div class="eyebrow">Achat & réassurance</div>
+        <h2 class="section-title">Le bon modèle pour commencer : vitrine premium + vente légère.</h2>
+        <p class="section-copy">
+          Pour GitHub Pages, le plus malin est souvent de garder un site statique haut de gamme, puis de brancher soit un paiement direct pour certaines œuvres, soit une réservation par email/WhatsApp pour les pièces uniques.
+        </p>
+
+        <div class="split" style="margin-top:1.6rem;">
+          <div class="panel">
+            <div class="eyebrow">Parcours conseillé</div>
+            <div class="list">
+              <div class="list-item">
+                <strong>1. Galerie claire</strong>
+                <span>Le visiteur découvre les œuvres, filtre par série et ouvre le détail en grand.</span>
+              </div>
+              <div class="list-item">
+                <strong>2. Fiche détaillée</strong>
+                <span>Dimensions, technique, prix, statut, histoire courte, conditions d'envoi.</span>
+              </div>
+              <div class="list-item">
+                <strong>3. Action immédiate</strong>
+                <span>Bouton “acheter” si lien de paiement, sinon “réserver / demander” avec email prérempli.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="eyebrow">À afficher de manière visible</div>
+            <div class="list">
+              <div class="list-item">
+                <strong>Disponibilité</strong>
+                <span>Disponible, réservée ou vendue, pour éviter toute frustration.</span>
+              </div>
+              <div class="list-item">
+                <strong>Logistique</strong>
+                <span>Délais d'envoi, zones livrées, retrait atelier, emballage, retour si applicable.</span>
+              </div>
+              <div class="list-item">
+                <strong>Preuve de sérieux</strong>
+                <span>Coordonnées directes, Instagram, éventuels avis, expositions, certificats.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonials">
+          <div class="quote">
+            <p>“La présentation est épurée, les tableaux respirent et l'achat semble simple. C'est exactement ce qu'on attend d'un site d'artiste.”</p>
+            <small>Avis type • à remplacer par un vrai témoignage</small>
+          </div>
+          <div class="quote">
+            <p>“Les photos en grand format, les dimensions et le prix visible donnent confiance dès la première visite.”</p>
+            <small>Collectionneur • exemple</small>
+          </div>
+          <div class="quote">
+            <p>“On comprend rapidement l'univers de l'artiste sans être noyé par trop d'informations.”</p>
+            <small>Visiteur de galerie • exemple</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="eyebrow">Questions fréquentes</div>
+        <h2 class="section-title">Anticiper les questions enlève de la friction à l'achat.</h2>
+        <div class="faq">
+          <details>
+            <summary>Les œuvres sont-elles originales ?</summary>
+            <p>Oui, indique ici si la pièce est un original, un tirage limité ou une reproduction, avec certificat si nécessaire.</p>
+          </details>
+          <details>
+            <summary>Comment réserver une œuvre ?</summary>
+            <p>Le plus simple est d'utiliser le bouton de réservation qui ouvre un email prérempli avec le nom de l'œuvre.</p>
+          </details>
+          <details>
+            <summary>Les commandes sur mesure sont-elles possibles ?</summary>
+            <p>Oui, si l'artiste accepte les commandes, précise le type de demande, les dimensions possibles et le délai estimé.</p>
+          </details>
+          <details>
+            <summary>Expédiez-vous les tableaux ?</summary>
+            <p>Ajoute ici les pays couverts, les délais, le type d'emballage et les conditions particulières pour les grands formats.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container contact-grid">
+        <div class="panel">
+          <div class="eyebrow">Contact</div>
+          <h2 class="section-title">Parler à l'artiste doit être simple.</h2>
+          <p class="section-copy">
+            Un site d'artiste convertit mieux quand le contact est direct, humain et rapide. Ici, on garde des points d'entrée très clairs : email, Instagram et lien de message.
+          </p>
+          <div class="contact-actions">
+            <a class="btn btn-primary" id="contactEmailBtn" href="mailto:contact@artiste.fr">Envoyer un email</a>
+            <a class="btn btn-secondary" id="instagramBtn" href="#" target="_blank" rel="noreferrer">Voir Instagram</a>
+            <a class="btn btn-secondary" id="whatsappBtn" href="#" target="_blank" rel="noreferrer">Message direct</a>
+          </div>
+        </div>
+
+        <div class="panel contact-card">
+          <div class="contact-line">
+            <span class="contact-label">Email</span>
+            <span class="contact-value" id="contactEmailValue">contact@artiste.fr</span>
+          </div>
+          <div class="contact-line">
+            <span class="contact-label">Instagram</span>
+            <span class="contact-value" id="instagramValue">@nomartiste</span>
+          </div>
+          <div class="contact-line">
+            <span class="contact-label">Atelier / Ville</span>
+            <span class="contact-value" id="locationValue">France</span>
+          </div>
+          <div class="contact-line">
+            <span class="contact-label">Informations d'expédition</span>
+            <span class="contact-value" id="shippingValue">Expédition soignée ou retrait à l'atelier</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div><strong id="footerName">Nom de l'artiste</strong> — site galerie et vente d'œuvres.</div>
+      <div>Construit en HTML/CSS/JS • prêt pour GitHub Pages</div>
+    </div>
+  </footer>
+
+  <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-grid">
+        <div class="modal-media">
+          <img id="modalImage" src="" alt="" width="1000" height="1200" />
+        </div>
+        <div class="modal-body">
+          <div class="modal-top">
+            <div>
+              <div class="eyebrow" id="modalCategory">Collection</div>
+              <h3 class="modal-title" id="modalTitle">Titre de l'œuvre</h3>
+              <div class="art-sub" id="modalSubtitle">Technique • Année</div>
+            </div>
+            <button class="close-btn" id="closeModal" aria-label="Fermer la fenêtre">✕</button>
+          </div>
+
+          <p class="section-copy" id="modalDescription"></p>
+
+          <div class="meta-grid">
+            <div class="meta-item">
+              <span>Format</span>
+              <strong id="modalSize">80 × 100 cm</strong>
+            </div>
+            <div class="meta-item">
+              <span>Prix</span>
+              <strong id="modalPrice">1 250 €</strong>
+            </div>
+            <div class="meta-item">
+              <span>Statut</span>
+              <strong id="modalStatus">Disponible</strong>
+            </div>
+            <div class="meta-item">
+              <span>Support</span>
+              <strong id="modalMedium">Acrylique sur toile</strong>
+            </div>
+          </div>
+
+          <div class="modal-actions" id="modalActions"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="artworks.js"></script>
+  <script>
+    const config = window.SITE_CONFIG;
+    const artworks = window.ARTWORKS || [];
+
+    const state = {
+      filter: "Toutes",
+      search: "",
+      sort: "featured"
+    };
+
+    const el = {
+      brandMark: document.getElementById("brandMark"),
+      brandTitle: document.getElementById("brandTitle"),
+      heroTitle: document.getElementById("heroTitle"),
+      heroText: document.getElementById("heroText"),
+      artistLocation: document.getElementById("artistLocation"),
+      shippingText: document.getElementById("shippingText"),
+      commissionsText: document.getElementById("commissionsText"),
+      heroImage: document.getElementById("heroImage"),
+      heroArtworkTitle: document.getElementById("heroArtworkTitle"),
+      heroArtworkMeta: document.getElementById("heroArtworkMeta"),
+      heroArtworkPrice: document.getElementById("heroArtworkPrice"),
+      aboutTitle: document.getElementById("aboutTitle"),
+      aboutText1: document.getElementById("aboutText1"),
+      aboutText2: document.getElementById("aboutText2"),
+      contactEmailBtn: document.getElementById("contactEmailBtn"),
+      instagramBtn: document.getElementById("instagramBtn"),
+      whatsappBtn: document.getElementById("whatsappBtn"),
+      contactEmailValue: document.getElementById("contactEmailValue"),
+      instagramValue: document.getElementById("instagramValue"),
+      locationValue: document.getElementById("locationValue"),
+      shippingValue: document.getElementById("shippingValue"),
+      footerName: document.getElementById("footerName"),
+      filterRow: document.getElementById("filterRow"),
+      galleryGrid: document.getElementById("galleryGrid"),
+      emptyState: document.getElementById("emptyState"),
+      searchInput: document.getElementById("searchInput"),
+      sortSelect: document.getElementById("sortSelect"),
+      modal: document.getElementById("modal"),
+      closeModal: document.getElementById("closeModal"),
+      modalImage: document.getElementById("modalImage"),
+      modalCategory: document.getElementById("modalCategory"),
+      modalTitle: document.getElementById("modalTitle"),
+      modalSubtitle: document.getElementById("modalSubtitle"),
+      modalDescription: document.getElementById("modalDescription"),
+      modalSize: document.getElementById("modalSize"),
+      modalPrice: document.getElementById("modalPrice"),
+      modalStatus: document.getElementById("modalStatus"),
+      modalMedium: document.getElementById("modalMedium"),
+      modalActions: document.getElementById("modalActions")
+    };
+
+    function initBranding(){
+      const initial = (config.artistName || "A").trim().charAt(0).toUpperCase();
+      document.title = config.siteTitle || `${config.artistName} — Galerie d'art`;
+      el.brandMark.textContent = initial;
+      el.brandTitle.textContent = config.artistName;
+      el.heroTitle.textContent = config.heroHeading;
+      el.heroText.textContent = config.heroText;
+      el.artistLocation.textContent = `Atelier • ${config.location}`;
+      el.shippingText.textContent = config.shippingShort;
+      el.commissionsText.textContent = config.commissionsShort;
+      el.aboutTitle.textContent = config.aboutHeading;
+      el.aboutText1.textContent = config.aboutText1;
+      el.aboutText2.textContent = config.aboutText2;
+      el.contactEmailBtn.href = `mailto:${config.email}`;
+      el.instagramBtn.href = config.instagramUrl;
+      el.whatsappBtn.href = config.whatsappUrl;
+      el.contactEmailValue.textContent = config.email;
+      el.instagramValue.textContent = config.instagramHandle;
+      el.locationValue.textContent = config.location;
+      el.shippingValue.textContent = config.shippingLong;
+      el.footerName.textContent = config.artistName;
+      document.querySelector('meta[name="description"]').setAttribute('content', config.metaDescription);
+
+      const featured = artworks.find(a => a.id === config.featuredArtworkId) || artworks[0];
+      if(featured){
+        el.heroImage.src = featured.image;
+        el.heroImage.alt = featured.alt;
+        el.heroArtworkTitle.textContent = featured.title;
+        el.heroArtworkMeta.textContent = `${featured.medium} • ${featured.size}`;
+        el.heroArtworkPrice.textContent = formatPrice(featured);
+      }
+    }
+
+    function formatPrice(artwork){
+      if (!artwork.price) return "Prix sur demande";
+      return new Intl.NumberFormat('fr-FR', {
+        style: 'currency',
+        currency: artwork.currency || 'EUR',
+        maximumFractionDigits: 0
+      }).format(artwork.price);
+    }
+
+    function translateStatus(status){
+      if(status === "available") return "Disponible";
+      if(status === "reserved") return "Réservée";
+      return "Vendue";
+    }
+
+    function filterAndSort(){
+      let filtered = [...artworks];
+
+      if(state.filter !== "Toutes"){
+        filtered = filtered.filter(item => item.category === state.filter);
+      }
+
+      if(state.search.trim()){
+        const q = state.search.toLowerCase();
+        filtered = filtered.filter(item =>
+          [item.title, item.category, item.medium, item.description, item.palette]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase()
+            .includes(q)
+        );
+      }
+
+      if(state.sort === "newest"){
+        filtered.sort((a,b) => (b.year || 0) - (a.year || 0));
+      } else if(state.sort === "price-asc"){
+        filtered.sort((a,b) => (a.price || Number.MAX_SAFE_INTEGER) - (b.price || Number.MAX_SAFE_INTEGER));
+      } else if(state.sort === "price-desc"){
+        filtered.sort((a,b) => (b.price || 0) - (a.price || 0));
+      } else {
+        filtered.sort((a,b) => (b.featured === true) - (a.featured === true) || (b.year || 0) - (a.year || 0));
+      }
+
+      return filtered;
+    }
+
+    function renderFilters(){
+      const categories = ["Toutes", ...new Set(artworks.map(item => item.category))];
+      el.filterRow.innerHTML = "";
+      categories.forEach(cat => {
+        const btn = document.createElement("button");
+        btn.className = `chip ${state.filter === cat ? "active" : ""}`;
+        btn.textContent = cat;
+        btn.type = "button";
+        btn.addEventListener("click", () => {
+          state.filter = cat;
+          renderFilters();
+          renderGallery();
+        });
+        el.filterRow.appendChild(btn);
+      });
+    }
+
+    function renderGallery(){
+      const items = filterAndSort();
+      el.galleryGrid.innerHTML = "";
+      el.emptyState.hidden = items.length > 0;
+
+      items.forEach(artwork => {
+        const article = document.createElement("article");
+        article.className = "art-card";
+        article.innerHTML = `
+          <div class="art-media">
+            <span class="badge ${artwork.status}">${translateStatus(artwork.status)}</span>
+            <img src="${artwork.image}" alt="${artwork.alt}" width="900" height="1080" loading="lazy" />
+          </div>
+          <div class="art-body">
+            <div class="art-head">
+              <div>
+                <h3 class="art-title">${artwork.title}</h3>
+                <div class="art-sub">${artwork.medium} • ${artwork.size}</div>
+              </div>
+              <div class="price">
+                <strong>${formatPrice(artwork)}</strong>
+                <small>${artwork.year || ""}</small>
+              </div>
+            </div>
+            <div class="art-desc">${artwork.description}</div>
+            <div class="art-actions">
+              <button class="btn btn-primary" type="button" data-action="details">Voir le détail</button>
+              ${artwork.status === "available"
+                ? `<a class="btn btn-secondary" href="${artwork.stripeUrl || makeMailto(artwork)}" ${artwork.stripeUrl ? 'target="_blank" rel="noreferrer"' : ''}>${artwork.stripeUrl ? 'Acheter' : 'Réserver'}</a>`
+                : `<button class="btn btn-secondary" type="button" disabled aria-disabled="true">${translateStatus(artwork.status)}</button>`
+              }
+            </div>
+          </div>
+        `;
+        article.querySelector('[data-action="details"]').addEventListener("click", () => openModal(artwork));
+        el.galleryGrid.appendChild(article);
+      });
+    }
+
+    function makeMailto(artwork){
+      const subject = encodeURIComponent(`Demande pour l'œuvre : ${artwork.title}`);
+      const body = encodeURIComponent(
+`Bonjour ${config.artistName},
+
+Je souhaite avoir plus d'informations sur l'œuvre "${artwork.title}".
+- Format : ${artwork.size}
+- Technique : ${artwork.medium}
+- Prix : ${formatPrice(artwork)}
+
+Merci beaucoup.`
+      );
+      return `mailto:${config.email}?subject=${subject}&body=${body}`;
+    }
+
+    function openModal(artwork){
+      el.modalImage.src = artwork.image;
+      el.modalImage.alt = artwork.alt;
+      el.modalCategory.textContent = artwork.category;
+      el.modalTitle.textContent = artwork.title;
+      el.modalSubtitle.textContent = `${artwork.medium} • ${artwork.year}`;
+      el.modalDescription.textContent = artwork.descriptionLong || artwork.description;
+      el.modalSize.textContent = artwork.size;
+      el.modalPrice.textContent = formatPrice(artwork);
+      el.modalStatus.textContent = translateStatus(artwork.status);
+      el.modalMedium.textContent = artwork.medium;
+      el.modalActions.innerHTML = '';
+
+      const detailBtn = document.createElement('a');
+      detailBtn.className = 'btn btn-secondary';
+      detailBtn.href = makeMailto(artwork);
+      detailBtn.textContent = 'Poser une question';
+      el.modalActions.appendChild(detailBtn);
+
+      if(artwork.status === 'available'){
+        const primary = document.createElement('a');
+        primary.className = 'btn btn-primary';
+        primary.textContent = artwork.stripeUrl ? 'Acheter cette œuvre' : 'Réserver cette œuvre';
+        primary.href = artwork.stripeUrl || makeMailto(artwork);
+        if(artwork.stripeUrl){
+          primary.target = '_blank';
+          primary.rel = 'noreferrer';
+        }
+        el.modalActions.appendChild(primary);
+      }
+
+      el.modal.classList.add('show');
+      el.modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(){
+      el.modal.classList.remove('show');
+      el.modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    el.searchInput.addEventListener('input', (event) => {
+      state.search = event.target.value;
+      renderGallery();
+    });
+
+    el.sortSelect.addEventListener('change', (event) => {
+      state.sort = event.target.value;
+      renderGallery();
+    });
+
+    el.closeModal.addEventListener('click', closeModal);
+    el.modal.addEventListener('click', (event) => {
+      if(event.target === el.modal) closeModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if(event.key === 'Escape') closeModal();
+    });
+
+    initBranding();
+    renderFilters();
+    renderGallery();
+  </script>
+</body>
+</html>
