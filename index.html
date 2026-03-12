@@ -146,15 +146,19 @@
 .art-btn.primary:hover{
   box-shadow:0 20px 42px rgba(28,18,13,.24);
 }
-    .btn-secondary{
-      background:rgba(255,255,255,.56);
-      border-color:var(--line);
-      backdrop-filter:blur(16px);
-    }
-    .btn-secondary:hover{
-      background:rgba(255,255,255,.9);
-      border-color:var(--line-strong);
-    }
+.btn-secondary{
+  border:1px solid rgba(25,20,18,.10);
+  background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,239,231,.96));
+  color:#2a1f1a;
+  box-shadow:0 10px 22px rgba(26,18,13,.06);
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.btn-secondary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 28px rgba(29,21,16,.10);
+  border-color:rgba(127,74,43,.16);
+}
     .btn-ghost{
       background:transparent;
       border-color:var(--line);
