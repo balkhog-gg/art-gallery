@@ -137,7 +137,7 @@
 }
 
 .art-btn.primary{
-  background:linear-gradient(180deg,#2c201a,#160f0b);
+  background:linear-gradient(180deg,#2b1e18,#160f0b);
   color:#fff;
   border:none;
   box-shadow:0 14px 30px rgba(28,18,13,.18);
@@ -581,14 +581,21 @@
       border:1px solid rgba(127,74,43,.1);
     }
     .art-actions{
-      display:flex;
-      gap:.7rem;
-      flex-wrap:wrap;
-      margin-top:auto;
-      padding-top:.2rem;
-    }
-    .art-actions .btn{flex:1 1 180px}
-
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.8rem;
+  margin-top:auto;
+  padding-top:.2rem;
+}
+.art-actions .btn{
+  width:100%;
+  min-height:54px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+}
     .curation-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
